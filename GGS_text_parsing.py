@@ -35,6 +35,7 @@ import os.path
 class Text_transform:
     """QGIS Plugin Implementation."""
 
+
     def __init__(self, iface):
         """Constructor.
 
@@ -66,6 +67,7 @@ class Text_transform:
         # Check if plugin was started the first time in current QGIS session
         # Must be set in initGui() to survive plugin reloads
         self.first_start = None
+        self.FullSets=[False,False] #Всегда 2 символа
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
@@ -163,9 +165,6 @@ class Text_transform:
         #icon_path = ':/plugins/GGS_text_parsing/icon.png'
         #ПУТЬ до ИКОНКИ КУГИС!!!!!
         icon_path = os.path.join(os.path.dirname(__file__),'image/ggs_text_icon.png')
-        
-        print('exist',os.path.exists(icon_path))
-        print(os.path.abspath(icon_path))
         self.add_action(
             icon_path,
             text=self.tr(u''),
@@ -184,10 +183,31 @@ class Text_transform:
                 action)
             self.iface.removeToolBarIcon(action)
 #=======ПОЛЬЗОВАТЕЛЬСКИЕ ПРОЦЕДУРЫ/=============================
-    def select_output_file(self):
-        filename=QFileDialog.getOpenFileName(self.dlg,'Выберете файл ГГС пунктов',':','*.txt')[0]
+    def select_ggs_file(self):
+        # todo chek selesct folder
+        self.FileForParce=QFileDialog.getOpenFileName(self.dlg,'Выберете файл ГГС пунктов',':','*.txt')[0]
         #print(filename)
-        self.dlg.ledit_ggstxt.setText(filename)
+        self.dlg.ledit_ggstxt.setText(self.FileForParce)
+        print('text',self.FileForParce)
+        self.change_sets(1)
+        #self.FileForParce = self.dlg.ledit_ggstxt.text()
+
+    def select_out_folder(self):
+        #todo chek selesct folder
+        self.OutPutFolder=QFileDialog.getExistingDirectory (self.dlg,'Дирректория для выходных материалов',':')
+        print(self.OutPutFolder)
+        self.dlg.ledit_ggsoutfolder.setText(self.OutPutFolder)
+        print('text',self.OutPutFolder)
+        self.change_sets(2)
+    def change_sets(self,proc):
+        print(self.FullSets[0])
+        if proc==1: self.FullSets[0]=True
+        if proc==2: self.FullSets[1]=True
+        #if proc==2: self.FullSets='01'
+        print(self.FullSets)
+
+    #todo parsing prosedure
+
 
 #=======\ПОЛЬЗОВАТЕЛЬСКИЕ ПРОЦЕДУРЫ=============================
 
@@ -201,17 +221,22 @@ class Text_transform:
             self.first_start = False
             self.dlg = Text_transformDialog()
         #===================Conect/=========================
-        self.dlg.pb_sel_ggstxt.clicked.connect(self.select_output_file)
+        self.dlg.pb_sel_ggstxt.clicked.connect(self.select_ggs_file)
+        self.dlg.pb_sel_ggsoutfolder.clicked.connect(self.select_out_folder)
         
         #===================\Conect=========================
-        
+
         # show the dialog
         self.dlg.show()
         # Run the dialog event loop
         result = self.dlg.exec_()
         # See if OK was pressed
-        if result:
+        if result and self.FullSets[0] and self.FullSets[1]:
             # Do something useful here - delete the line containing pass and
             # substitute with your code.
-            print(dir (self.dlg))
-            pass
+            print('FileForParce3', self.FileForParce,'GoGOGO')
+            #print(dir (self.dlg))
+
+        else:
+            #ToDO message box
+            print('Задайте все параметры')
