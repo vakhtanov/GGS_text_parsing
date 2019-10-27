@@ -205,7 +205,7 @@ class Text_transform:
         #if proc==2: self.FullSets='01'
         print(self.FullSets)
 
-
+ 
 
 #=======\ПОЛЬЗОВАТЕЛЬСКИЕ ПРОЦЕДУРЫ=============================
 

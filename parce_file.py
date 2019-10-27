@@ -1,22 +1,70 @@
 # -*- coding: utf-8 -*-
-import os
+import os, re
 
 def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМВОЛАМ
     #print('Рабочий блок'.encode('cp866'),len(GGSBlock))
-    print(u'Рабочий блок'.encode('cp866'),len(GGSBlock))
-    ##ВАЖНО!!!! .decode('WINDOWS-1251').encode('UTF-8') - перекодировка в UTF8!!!!
+    print('Рабочий блок',len(GGSBlock))
+    """
+    ##ВАЖНО!!!! .decode('cp1251').encode('utf-8') - перекодировка в UTF8!!!! - раскоидрование из юникод символов
     i=0
     for line in GGSBlock:
-        #GGSBlock[i]=line.decode('WINDOWS-1251').encode('UTF-8')
-        GGSBlock[i]=line.decode('WINDOWS-1251').encode('UTF-8')
+        line_decode=line.decode('cp1251').encode('utf-8')
+        GGSBlock[i]=line_decode
         i+=1
+    """
+    #=============SEARCH VARIBLES=========================
+    #print(GGSBlock[0])
+    #Делаем шаблон с группами
+    #Distant_search0=re.compile('(\s*Удаление=\s*)(\d{1,10})')
+    #Ищем и берем 2ю группу - расстояние
+    #ToDO groups - надо отделить с проверкой вхождения - это защита
+    #-----------------------
+    SEARCH = re.search('(\s*Удаление=\s*)(\d{1,10})', GGSBlock[0])
+    if SEARCH != None:
+        Distant=SEARCH.groups()[1]
+        #print('Distant:', Distant,'.')
+    #-----------------------
+    SEARCH = re.search('\s*(\w\d{7}\s*\d)\s*(.*\S)\s*', GGSBlock[1])
+    if SEARCH != None :
+        Comment1=SEARCH.groups()[0]
+        Name_Type=SEARCH.groups()[1]
+        #print('Comment1:', Comment1,'.')
+        #print('Name_Type:', Name_Type,'.')
+    #-----------------------
+    SEARCH = re.search('\s*Центр\s*(\S{1,5})\s*Марка №\s*(\S{1,5})\s*', GGSBlock[2])
+    if SEARCH != None :
+        Center=SEARCH.groups()[0]
+        Marka=SEARCH.groups()[1]
+        #print('Center:', Center,'.')
+        #print('Marka:', Marka,'.')
+    #-----------------------
+    #Todo what means "G98 and rG98"
+    SEARCH = re.search('\s*(.-..-...-\w-\w)\s*(\d*.\d*)\s*(\d*.\d*)\s*\S{0,1}Hn=\s*(-{0,1}\d*.\d*)\s*\S{0,1}G98=\s*(-{0,1}\d*.\d*)\s*(\w{2}-\S*)\s*', GGSBlock[3])
+    print(GGSBlock[3])
+    print('SEARCH',SEARCH)
+    if SEARCH != None :
+        Nomenklatura1=SEARCH.groups()[0]
+        SK42_X=SEARCH.groups()[1]
+        SK42_Y=SEARCH.groups()[2]
+        Hn=SEARCH.groups()[3]
+        G98=SEARCH.groups()[4]
+        Proj1=SEARCH.groups()[5]
+        print('Nomenklatura1:', Nomenklatura1, '.')
+        print('SK42_X:', SK42_X, '.')
+        print('SK42_Y:', SK42_Y, '.')
+        print('Hn:', Hn, '.')
+        print('G98:', G98, '.')
+        print('Proj1:', Proj1, '.')
+
+
+
+
 
     out_test_file = os.path.join(out_folder, 'ggs'+str(NumberOfGGSs)+'.txt')
     with open(out_test_file, 'w') as out_f:
         for line in GGSBlock:
-            #line.decode('WINDOWS-1251').encode('UTF-8')
             out_f.write(line)
-        print(GGSBlock)
+        #print(GGSBlock)
 def parse_ggs_file(in_file,out_folder):
     StageParce=0
     StartLine=0
@@ -35,7 +83,6 @@ def parse_ggs_file(in_file,out_folder):
 
     with open(in_file) as in_f:
         GGSBlock = []
-
         FileLine=0
         for line in in_f:
             FileLine+=1
@@ -66,15 +113,13 @@ def parse_ggs_file(in_file,out_folder):
                 GGSBlock=[]
                 GGSBlock.append(line)
                 GGSBlockCount=1
-                print('Start next GGS', FileLine)
+                #print('Start next GGS', FileLine)
             elif StageParce ==3:
                 GGSBlockCount += 1
-                print(GGSBlockCount,FileLine)
+                #print(GGSBlockCount,FileLine)
                 #==================
                 GGSBlock.append(line)
                 #===================
-
-
         if StartLine == 2 and StageParce == 4:
             print('start section', StartLine, StageParce)
             print('end of file')
