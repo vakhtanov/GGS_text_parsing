@@ -30,6 +30,7 @@ from .resources import *
 # Import the code for the dialog
 from .GGS_text_parsing_dialog import Text_transformDialog
 import os.path
+from .parce_file import parse_ggs_file
 
 
 class Text_transform:
@@ -184,29 +185,26 @@ class Text_transform:
             self.iface.removeToolBarIcon(action)
 #=======ПОЛЬЗОВАТЕЛЬСКИЕ ПРОЦЕДУРЫ/=============================
     def select_ggs_file(self):
-        # todo chek selesct folder
+        #
         self.FileForParce=QFileDialog.getOpenFileName(self.dlg,'Выберете файл ГГС пунктов',':','*.txt')[0]
-        #print(filename)
-        self.dlg.ledit_ggstxt.setText(self.FileForParce)
-        print('text',self.FileForParce)
-        self.change_sets(1)
-        #self.FileForParce = self.dlg.ledit_ggstxt.text()
+        if self.FileForParce:
+            self.dlg.ledit_ggstxt.setText(self.FileForParce)
+            #print('text', self.FileForParce)
+            self.change_sets(1)
 
     def select_out_folder(self):
-        #todo chek selesct folder
+        #
         self.OutPutFolder=QFileDialog.getExistingDirectory (self.dlg,'Дирректория для выходных материалов',':')
-        print(self.OutPutFolder)
-        self.dlg.ledit_ggsoutfolder.setText(self.OutPutFolder)
-        print('text',self.OutPutFolder)
-        self.change_sets(2)
+        if self.OutPutFolder:
+            self.dlg.ledit_ggsoutfolder.setText(self.OutPutFolder)
+            #print('text', self.OutPutFolder)
+            self.change_sets(2)
     def change_sets(self,proc):
-        print(self.FullSets[0])
         if proc==1: self.FullSets[0]=True
         if proc==2: self.FullSets[1]=True
         #if proc==2: self.FullSets='01'
         print(self.FullSets)
 
-    #todo parsing prosedure
 
 
 #=======\ПОЛЬЗОВАТЕЛЬСКИЕ ПРОЦЕДУРЫ=============================
@@ -234,9 +232,9 @@ class Text_transform:
         if result and self.FullSets[0] and self.FullSets[1]:
             # Do something useful here - delete the line containing pass and
             # substitute with your code.
-            print('FileForParce3', self.FileForParce,'GoGOGO')
-            #print(dir (self.dlg))
+            parse_ggs_file(self.FileForParce, self.OutPutFolder)
 
         else:
             #ToDO message box
             print('Задайте все параметры')
+            self.dlg.show()
