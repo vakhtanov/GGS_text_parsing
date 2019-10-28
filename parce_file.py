@@ -31,7 +31,7 @@ def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМ�
         #print('Comment1:', Comment1,'.')
         #print('Name_Type:', Name_Type,'.')
     #-----------------------
-    SEARCH = re.search('\s*Центр\s*(\S{1,5})\s*Марка №\s*(\S{1,5})\s*', GGSBlock[2])
+    SEARCH = re.search('\s*Центр\s*(\S*)\s*Марка №\s*(\S{1,5})\s*', GGSBlock[2])
     if SEARCH != None :
         Center=SEARCH.groups()[0]
         Marka=SEARCH.groups()[1]
@@ -78,34 +78,22 @@ def parse_ggs_file(in_file,out_folder):
         по окончанию парсинга - NumberOfGGSs +=1 и переключение на 2ю стадию
     4 - найдена вторая =*78
     """
-    print ('in_file', in_file)
-
-
-    with open(in_file) as in_f:
+    # Файл в виндовской кодировке!!
+    with open(in_file,'r', encoding='cp1251') as in_f: 
         GGSBlock = []
         FileLine=0
+        print(in_f)
         for line in in_f:
             FileLine+=1
             #print(FileLine)
-            if '=' * 78 in line and StartLine==0 and StageParce == 0:
-                StartLine = 1
-                StageParce = 1
-                print('start section',StartLine,StageParce)
-            elif '=' * 78 in line and StartLine==1:
-                StartLine = 2
-                StageParce = 4
-                #print('break')
-                break
-            if StageParce == 1:
-                #ToDO добавить поиск точки начала
-                StageParce = 2
+            
 
             if '-'*60 in line and StageParce == 2:
                 StageParce =3
                 GGSBlockCount = 1
                 GGSBlock.append(line)
                 #continue
-            elif  '-'*60 in line and StageParce ==3:
+            elif  ('-'*60 in line or '=' * 78 in line) and StageParce ==3:
                 #===============================================
                 NumberOfGGSs += 1
                 parce_gg_block(GGSBlock,out_folder,NumberOfGGSs) #обработка блока пункта
@@ -120,6 +108,18 @@ def parse_ggs_file(in_file,out_folder):
                 #==================
                 GGSBlock.append(line)
                 #===================
+            if '=' * 78 in line and StartLine==0 and StageParce == 0:
+                StartLine = 1
+                StageParce = 1
+                print('start section',StartLine,StageParce)
+            elif '=' * 78 in line and StartLine==1:
+                StartLine = 2
+                StageParce = 4
+                #print('break')
+                break
+            if StageParce == 1:
+                #ToDO добавить поиск точки начала
+                StageParce = 2
         if StartLine == 2 and StageParce == 4:
             print('start section', StartLine, StageParce)
             print('end of file')
