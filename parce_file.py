@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 import os, re
+def deg_min_sec2degree(DMS_text):
+    pass
+
 
 def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМВОЛАМ
     #print('Рабочий блок'.encode('cp866'),len(GGSBlock))
@@ -40,8 +43,6 @@ def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМ�
     #-----------------------
     #Todo what means "G98 and rG98"
     SEARCH = re.search('\s*(.-..-...-\w-\w)\s*(\d*.\d*)\s*(\d*.\d*)\s*\S{0,1}Hn=\s*(-{0,1}\d*.\d*)\s*\S{0,1}G98=\s*(-{0,1}\d*.\d*)\s*(\w{2}-\S*)\s*', GGSBlock[3])
-    print(GGSBlock[3])
-    print('SEARCH',SEARCH)
     if SEARCH != None :
         Nomenklatura1=SEARCH.groups()[0]
         SK42_X=SEARCH.groups()[1]
@@ -49,12 +50,25 @@ def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМ�
         Hn=SEARCH.groups()[3]
         G98=SEARCH.groups()[4]
         Proj1=SEARCH.groups()[5]
-        print('Nomenklatura1:', Nomenklatura1, '.')
-        print('SK42_X:', SK42_X, '.')
-        print('SK42_Y:', SK42_Y, '.')
-        print('Hn:', Hn, '.')
-        print('G98:', G98, '.')
-        print('Proj1:', Proj1, '.')
+        #print('Nomenklatura1:', Nomenklatura1, '.')
+        #print('SK42_X:', SK42_X, '.')
+        #print('SK42_Y:', SK42_Y, '.')
+        #print('Hn:', Hn, '.')
+        #print('G98:', G98, '.')
+        #print('Proj1:', Proj1, '.')
+    # -----------------------
+    SEARCH = re.search(r'\s*(\d{2}°\d{2}\'\d{2}.\d*\")\s*(\d{2}°\d{2}\'\d{2}.\d*\")\s*\S{0,1}G87=\s*(-{0,1}\d*.\d*)\s*(\w{2}-\S*)\s*',GGSBlock[4])
+    print(GGSBlock[4])
+    print('SEARCH', SEARCH)
+    if SEARCH != None:
+        SK42_B = SEARCH.groups()[0]
+        SK42_L = SEARCH.groups()[1]
+        G87 = SEARCH.groups()[2]
+        Proj2 = SEARCH.groups()[3]
+        print('SK42_B:', SK42_B, '.')
+        print('SK42_L:', SK42_L, '.')
+        print('G87:', G87, '.')
+        print('Proj2:', Proj2, '.')
 
 
 
@@ -130,6 +144,6 @@ def parse_ggs_file(in_file,out_folder):
 
 
 if __name__=='__main__':
-    in_file=u'c:\\Users\\Андрей\\AppData\\Roaming\\QGIS\\QGIS3\\profiles\\default\\python\\plugins\\GGS_text_parsing\\sample_ggs\\Sample.txt'
-    out_folder=u'c:\\Users\\Андрей\\AppData\\Roaming\\QGIS\\QGIS3\\profiles\\default\\python\\plugins\\GGS_text_parsing\\sample_ggs\\out_folder'
+    in_file=u'c:\\Users\\Андрей\\AppData\\Roaming\\QGIS\\QGIS3\\profiles\\default\\python\\plugins\\GGS_text_parsing\\testdata\\Sample.txt'
+    out_folder=u'c:\\Users\\Андрей\\AppData\\Roaming\\QGIS\\QGIS3\\profiles\\default\\python\\plugins\\GGS_text_parsing\\testdata\\output'
     parse_ggs_file(in_file,out_folder)
