@@ -58,18 +58,35 @@ def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМ�
         #print('Proj1:', Proj1, '.')
     # -----------------------
     SEARCH = re.search(r'\s*(\d{2}°\d{2}\'\d{2}.\d*\")\s*(\d{2}°\d{2}\'\d{2}.\d*\")\s*\S{0,1}G87=\s*(-{0,1}\d*.\d*)\s*(\w{2}-\S*)\s*',GGSBlock[4])
-    print(GGSBlock[4])
-    print('SEARCH', SEARCH)
+
     if SEARCH != None:
         SK42_B = SEARCH.groups()[0]
         SK42_L = SEARCH.groups()[1]
         G87 = SEARCH.groups()[2]
         Proj2 = SEARCH.groups()[3]
-        print('SK42_B:', SK42_B, '.')
-        print('SK42_L:', SK42_L, '.')
-        print('G87:', G87, '.')
-        print('Proj2:', Proj2, '.')
-
+        #print('SK42_B:', SK42_B, '.')
+        #print('SK42_L:', SK42_L, '.')
+        #print('G87:', G87, '.')
+        #print('Proj2:', Proj2, '.')
+    #-----------------------
+    #SEARCH = re.search('\s*(.-..-...-\w-\w)\s*(\d*.\d*)\s*(\S{0,1}\d*.\d*).*\((\d*.\d*)\s*(\d*.\d*)\)\s*(\w{2}-\S*/\S*)\s*', GGSBlock[5])
+    SEARCH = re.search('\s*(.-..-...-\w-\w)\s*(\d*.\d*)\s*(\S{0,1}.*\d*.\d*).*\((\d*.\d*)\s*(\S{0,1}.*\d*.\d*)\)\s*(\w{2}-\S*/\S*)\s*', GGSBlock[5])
+    print(GGSBlock[5])
+    print('SEARCH', SEARCH)
+    if SEARCH != None :
+        Nomenklatura2=SEARCH.groups()[0]
+        SK63_X=SEARCH.groups()[1]
+        SK63_Y=SEARCH.groups()[2]
+        SK63_X2=SEARCH.groups()[3]
+        SK63_Y2=SEARCH.groups()[4]
+        Proj3=SEARCH.groups()[5]
+        #Proj1=SEARCH.groups()[5]
+        print('Nomenklatura2:', Nomenklatura2, '.')
+        print('SK63_X:', SK63_X, '.')
+        print('SK63_Y:', SK63_Y, '.')
+        print('SK63_X2:', SK63_X2, '.')
+        print('SK63_Y2:', SK63_Y2, '.')
+        print('Proj3:', Proj3, '.')
 
 
 
