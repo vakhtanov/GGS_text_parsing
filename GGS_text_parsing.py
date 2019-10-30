@@ -203,7 +203,7 @@ class Text_transform:
         if proc==1: self.FullSets[0]=True
         if proc==2: self.FullSets[1]=True
         #if proc==2: self.FullSets='01'
-        print(self.FullSets)
+        #print(self.FullSets)
 
  
 
@@ -232,6 +232,9 @@ class Text_transform:
         if result and self.FullSets[0] and self.FullSets[1]:
             # Do something useful here - delete the line containing pass and
             # substitute with your code.
+            print('')
+            print('='*78)
+            print('НАЧАЛО ОБРАБОТКИ ФАЙЛА')
             parse_ggs_file(self.FileForParce, self.OutPutFolder)
 
         else:
