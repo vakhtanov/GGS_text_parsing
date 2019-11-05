@@ -56,6 +56,13 @@ def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМ�
         #print('Hn:', Hn, '.')
         #print('G98:', G98, '.')
         #print('Proj1:', Proj1, '.')
+    else:
+        Nomenklatura1 = 'Формат??'
+        SK42_X = 'Формат??'
+        SK42_Y = 'Формат??'
+        Hn = 'Формат??'
+        G98 = 'Формат??'
+        Proj1 = 'Формат??'
     # -----------------------
     SEARCH = re.search(r'\s*(\d{2}°\d{2}\'\d{2}\.\d*\")\s*(\d{2}°\d{2}\'\d{2}\.\d*\")\s*G87=\s*(-{0,1}\d*\.\d*)\s*(\w{2}-\S*)\s*',GGSBlock[4])
     if SEARCH != None:
@@ -67,6 +74,15 @@ def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМ�
         #print('SK42_L:', SK42_L, '.')
         #print('G87:', G87, '.')
         #print('Proj2:', Proj2, '.')
+    else:
+        SK42_B = 'Формат??'
+        SK42_L = 'Формат??'
+        G87 = 'Формат??'
+        Proj2 = 'Формат??'
+        # print('SK42_B:', SK42_B, '.')
+        # print('SK42_L:', SK42_L, '.')
+        # print('G87:', G87, '.')
+        # print('Proj2:', Proj2, '.')
     #-----------------------
     SEARCH = re.search('\s*(.-..-...-\w-\w)\s*(\d*\.\d*)\s*(\S{0,1}.*\d*\.\d*).*\((\d*\.\d*)\s*(\S{0,1}.*\d*\.\d*)\)\s*(\w{2}-\S*/\S*)\s*', GGSBlock[5])
     if SEARCH != None :
@@ -83,6 +99,13 @@ def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМ�
         #print('SK63_X2:', SK63_X2, '.')
         #print('SK63_Y2:', SK63_Y2, '.')
         #print('Proj3:', Proj3, '.')
+    else:
+        Nomenklatura2 = 'Формат??'
+        SK63_X = 'Формат??'
+        SK63_Y = 'Формат??'
+        SK63_X2 = 'Формат??'
+        SK63_Y2 = 'Формат??'
+        Proj3 = 'Формат??'
     #-----------------------
     SEARCH = re.search('\s*(\d*\.\d*)\s*(\d*\.\d*)\s*Hg=\s*(-{0,1}\d*\.\d*)\s*EGM=\s*(-{0,1}\d*\.\d*)\s*(\w{2}-\S*)\s*', GGSBlock[6])
     if SEARCH != None :
@@ -96,6 +119,12 @@ def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМ�
         #print('Hg:', Hg, '.')
         #print('EGM:', EGM, '.')
         #print('Proj4:', Proj4, '.')
+    else:
+        SK95_X = 'Формат??'
+        SK95_Y = 'Формат??'
+        Hg = 'Формат??'
+        EGM = 'Формат??'
+        Proj4 = 'Формат??'
     # -----------------------
     SEARCH = re.search('\s*(\d{2}°\d{2}\'\d{2}\.\d*\")\s*(\d{2}°\d{2}\'\d{2}\.\d*\")\s*(\w{2}-\S*)\s*',GGSBlock[7])
     if SEARCH != None:
@@ -105,6 +134,10 @@ def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМ�
         #print('SK95_B:', SK95_B, '.')
         #print('SK95_L:', SK95_L, '.')
         #print('Proj5:', Proj5, '.')
+    else:
+        SK95_B = 'Формат??'
+        SK95_L = 'Формат??'
+        Proj5 = 'Формат??'
     #-----------------------
     SEARCH = re.search('\s*(\d*\.\d*)\s*(\d*\.\d*)\s*(\d*\.\d*)\s*(\w{2}-\S*)\s*', GGSBlock[8])
     if SEARCH != None :
@@ -116,6 +149,11 @@ def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМ�
         #print('PZ90_Y:', PZ90_Y, '.')
         #print('PZ90_Z:', PZ90_Z, '.')
         #print('Proj6:', Proj6, '.')
+    else:
+        PZ90_X = 'Формат??'
+        PZ90_Y = 'Формат??'
+        PZ90_Z = 'Формат??'
+        Proj6 = 'Формат??'
     #-----------------------
     SEARCH = re.search('\s*(\d*\.\d*)\s*(\d*\.\d*)\s*(\d*\.\d*)\s*(\w{2}-\S*)\s*', GGSBlock[9])
     if SEARCH != None :
@@ -127,6 +165,11 @@ def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМ�
         #print('PZ90.02_Y:', PZ9002_Y, '.')
         #print('PZ90.02_Z:', PZ9002_Z, '.')
         #print('Proj7:', Proj7, '.')
+    else:
+        PZ9002_X = 'Формат??'
+        PZ9002_Y = 'Формат??'
+        PZ9002_Z = 'Формат??'
+        Proj7 = 'Формат??'
     #-----------------------
     SEARCH = re.search('\s*(\d*\.\d*)\s*(\d*\.\d*)\s*(\d*\.\d*)\s*(\w{3}-\S*)\s*', GGSBlock[10])
     if SEARCH != None :
@@ -138,6 +181,11 @@ def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМ�
         #print('WGS84_Y:', WGS84_Y, '.')
         #print('WGS84_Z:', WGS84_Z, '.')
         #print('Proj8:', Proj8, '.')
+    else:
+        WGS84_X = 'Формат??'
+        WGS84_Y = 'Формат??'
+        WGS84_Z = 'Формат??'
+        Proj8 = 'Формат??'
     #-----------------------
     SEARCH = re.search('\s*(\d{2}°\d{2}\'\d{2}\.\d*\")\s*(\d{2}°\d{2}\'\d{2}\.\d*\")\s*Hw=\s*(-{0,1}\d*\.\d*)\s*Gwg=\s*(-{0,1}\d*\.\d*)\s*(\w{2}-\S*)\s*', GGSBlock[11])
     if SEARCH != None :
@@ -151,6 +199,12 @@ def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМ�
         #print('Hw:', Hw, '.')
         #print('Gwg:', Gwg, '.')
         #print('Proj9:', Proj9, '.')
+    else:
+        WGS84_B = 'Формат??'
+        WGS84_L = 'Формат??'
+        Hw = 'Формат??'
+        Gwg = 'Формат??'
+        Proj9 = 'Формат??'
 
 
 
@@ -165,7 +219,7 @@ def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМ�
     Distant,Comment1,Name_Type,Center_Marka,
     Proj1,Nomenklatura1,SK42_X,SK42_Y,Hn,G98,
     Proj2,SK42_B,SK42_L,G87,
-    Proj3,SK63_X,SK63_Y,SK63_X2,SK63_Y2,
+    Proj3,Nomenklatura2,SK63_X,SK63_Y,SK63_X2,SK63_Y2,
     Proj4,SK95_X,SK95_Y,Hg,EGM,
     Proj5,SK95_L,SK95_B,
     Proj6,PZ90_X,PZ90_Y,PZ90_Z,
