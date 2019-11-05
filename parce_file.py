@@ -2,8 +2,10 @@
 import os, re
 def deg_min_sec2degree(DMS_text):
     pass
+def parce_gg_block_positions(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО ПОЗИЦИЯМ
+    pass
 
-def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМВОЛАМ
+def parce_gg_block_keys(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР Ключевым словам
     #print('Рабочий блок'.encode('cp866'),len(GGSBlock))
     #print('Рабочий блок',len(GGSBlock))
     """
@@ -27,6 +29,8 @@ def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМ�
         Distant=SEARCH.groups()[1]
         
         #print('Distant:', Distant,'.')
+    else:
+        Distant='Формат??'
     #-----------------------
     SEARCH = re.search('\s*(\w\d{7}\s*\d)\s*(.*)\s*', GGSBlock[1])
     if SEARCH != None :
@@ -34,15 +38,26 @@ def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМ�
         Name_Type=' '.join(SEARCH.groups()[1].split())
         #print('Comment1:', Comment1,'.')
         #print('Name_Type:', Name_Type,'.')
+    else:
+        Comment1='Формат??'
+        Name_Type='Формат??'
     #-----------------------
     SEARCH = GGSBlock[2].split()
     print(SEARCH)
     if SEARCH != None :
         Center_Marka=' '.join(SEARCH)
         print('Center_Marka:', Center_Marka,'.')
+    else:
+        Center_Marka='Формат??'
     #-----------------------
-    #Todo what means "G98 and rG98"
-    SEARCH = re.search('\s*(.-..-...-\w-\w)\s*(\d*\.\d*)\s*(\d*\.\d*)\s*Hn=\s*(-{0,1}\d*\.\d*\s*\S{0,1})\s*G98=\s*(-{0,1}\d*\.\d*)\s*(\w{2}-\S*)\s*', GGSBlock[3])
+    ### СК-42 BL-42 CK-63/42 СК-95 BL-95 ПЗ-90 ПЗ-90.02 WGS-84 BL-WGS
+
+
+
+    #=====================ПРАСИНГ КООРДИНАТ===================================================
+    
+    #======================
+    SEARCH = re.search('\s*(.-..-...-\w-\w)\s*(\d*\.\d*)\s*(\d*\.\d*)\s*(Hn=\s*-{0,1}\d*\.\d*\s*\S{0,1})?\s*([gG]98=\s*-{0,1}\d*\.\d*)?\s*(\w{2}-\S*)\s*', GGSBlock[3])
     if SEARCH != None :
         Nomenklatura1=SEARCH.groups()[0]
         SK42_X=SEARCH.groups()[1]
@@ -64,7 +79,7 @@ def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМ�
         G98 = 'Формат??'
         Proj1 = 'Формат??'
     # -----------------------
-    SEARCH = re.search(r'\s*(\d{2}°\d{2}\'\d{2}\.\d*\")\s*(\d{2}°\d{2}\'\d{2}\.\d*\")\s*G87=\s*(-{0,1}\d*\.\d*)\s*(\w{2}-\S*)\s*',GGSBlock[4])
+    SEARCH = re.search(r'\s*(\d{2}°\d{2}\'\d{2}\.\d*\")\s*(\d{2}°\d{2}\'\d{2}\.\d*\")\s*([gG]87=\s*-{0,1}\d*\.\d*)?\s*(\w{2}-\S*)\s*',GGSBlock[4])
     if SEARCH != None:
         SK42_B = SEARCH.groups()[0]
         SK42_L = SEARCH.groups()[1]
@@ -107,7 +122,7 @@ def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМ�
         SK63_Y2 = 'Формат??'
         Proj3 = 'Формат??'
     #-----------------------
-    SEARCH = re.search('\s*(\d*\.\d*)\s*(\d*\.\d*)\s*Hg=\s*(-{0,1}\d*\.\d*)\s*EGM=\s*(-{0,1}\d*\.\d*)\s*(\w{2}-\S*)\s*', GGSBlock[6])
+    SEARCH = re.search('\s*(\d*\.\d*)\s*(\d*\.\d*)\s*(Hg=\s*-{0,1}\d*\.\d*)?\s*(EGM=\s*-{0,1}\d*\.\d*)?\s*(\w{2}-\S*)\s*', GGSBlock[6])
     if SEARCH != None :
         SK95_X=SEARCH.groups()[0]
         SK95_Y=SEARCH.groups()[1]
@@ -187,7 +202,7 @@ def parce_gg_block(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР ПО СИМ�
         WGS84_Z = 'Формат??'
         Proj8 = 'Формат??'
     #-----------------------
-    SEARCH = re.search('\s*(\d{2}°\d{2}\'\d{2}\.\d*\")\s*(\d{2}°\d{2}\'\d{2}\.\d*\")\s*Hw=\s*(-{0,1}\d*\.\d*)\s*Gwg=\s*(-{0,1}\d*\.\d*)\s*(\w{2}-\S*)\s*', GGSBlock[11])
+    SEARCH = re.search('\s*(\d{2}°\d{2}\'\d{2}\.\d*\")\s*(\d{2}°\d{2}\'\d{2}\.\d*\")\s*(Hw=\s*-{0,1}\d*\.\d*)?\s*(Gwg=\s*-{0,1}\d*\.\d*)?\s*(\w{2}-\S*)\s*', GGSBlock[11])
     if SEARCH != None :
         WGS84_B=SEARCH.groups()[0]
         WGS84_L=SEARCH.groups()[1]
@@ -246,9 +261,10 @@ def parse_ggs_file(in_file,out_folder):
     'Proj9','WGS84_B','WGS84_L','Hw','Gwg'
     ]
     out_GGS_file=os.path.splitext(in_file)[0]+'_reformat.csv'
-    with open(out_GGS_file, 'w', encoding='cp1251') as out_f:
-        out_f.write(';'.join(columns)+'\n')
-        pass
+    try:
+        with open(out_GGS_file, 'w', encoding='cp1251') as out_f: out_f.write(';'.join(columns)+'\n')
+    except:
+        print('закрой файл')
     """
     Стадии парсинга для контроля 
     0 - инициализация
@@ -275,7 +291,7 @@ def parse_ggs_file(in_file,out_folder):
             elif  ('-'*60 in line or '=' * 78 in line) and StageParce ==3:
                 #===============================================
                 NumberOfGGSs += 1
-                parce_one_GGS=parce_gg_block(GGSBlock,out_folder,NumberOfGGSs) #обработка блока пункта
+                parce_one_GGS=parce_gg_block_keys(GGSBlock,out_folder,NumberOfGGSs) #обработка блока пункта
                 parce_one_GGS_str=[str(x) for x in parce_one_GGS]
                 print(';'.join(parce_one_GGS_str))
                 with open(out_GGS_file, 'a', encoding='cp1251') as out_f: out_f.write(';'.join(parce_one_GGS_str)+'\n')
