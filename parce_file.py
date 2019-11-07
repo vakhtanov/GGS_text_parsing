@@ -64,14 +64,16 @@ def parce_gg_block_keys(GGSBlock,out_folder,NumberOfGGSs): #РАЗБОР Клю�
     
     for line in GGSBlock:
         if 'СК-42' in line: line_SK42=line
-        if 'BL-42' in line: line_BL42=line
-        if 'CK-63/42' in line: line_SK63_42=line
-        if 'СК-95' in line: line_SK95=line
-        if 'BL-95' in line: line_BL95=line
-        if 'ПЗ-90' in line: line_PZ90=line
-        if 'ПЗ-90.02' in line: line_PZ9002=line
-        if 'WGS-84' in line: line_WGS84=line
-        if 'BL-WGS' in line: line_BLWGS84=line
+        elif 'BL-42' in line: line_BL42=line
+        elif 'CK-63/42' in line: line_SK63_42=line
+        elif 'СК-95' in line: line_SK95=line
+        elif 'BL-95' in line: line_BL95=line
+        elif 'WGS-84' in line: line_WGS84=line
+        elif 'BL-WGS' in line: line_BLWGS84=line
+        else:
+            if 'ПЗ-90.02' in line: line_PZ9002=line
+            elif 'ПЗ-90' in line: line_PZ90=line
+            
     #======================
     SEARCH = re.search('\s*(.-..-...-\w-\w)\s*(\d*\.\d*)\s*(\d*\.\d*)\s*(Hn=\s*-{0,1}\d*\.\d*\s*\S{0,1})?\s*([gG]98=\s*-{0,1}\d*\.\d*)?\s*(\w{2}-\S*)\s*', line_SK42)
     if SEARCH != None :
